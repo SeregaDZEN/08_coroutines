@@ -31,7 +31,7 @@ fun main() {
                     .map { post ->
                         async {
                             PostWithComments(post, getComments(client, post.id))
-                            PostWithAuthorName(post, getAuthorName(client, post.id ))
+                            PostWithAuthorName(post, getAuthorName(client, post.authorId ))
                         }
                     }.awaitAll()
                 println(posts)
@@ -80,6 +80,6 @@ suspend fun getPosts(client: OkHttpClient): List<Post> =
 suspend fun getComments(client: OkHttpClient, id: Long): List<Comment> =
     makeRequest("$BASE_URL/api/slow/posts/$id/comments", client, object : TypeToken<List<Comment>>() {})
 
-suspend fun getAuthorName(client: OkHttpClient, authorId: Long): List<AuthorName> =
-    makeRequest("$BASE_URL/api/authors/$authorId", client, object : TypeToken <List<AuthorName>>() {})
+suspend fun getAuthorName(client: OkHttpClient, authorId: Long): AuthorName =
+    makeRequest("$BASE_URL/api/authors/$authorId", client, object : TypeToken <AuthorName>() {})
 
